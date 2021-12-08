@@ -21,14 +21,14 @@ public class NaiveDiagnosticsInterpreter implements DiagnosticsInterpreter{
 
     @Override
     public int getGammaRate() {
-        String binaryGammaRate = calculateBasedOnAmountOfOnes("1", "0");
+        String binaryGammaRate = calculateMostCommonBits();
         return Integer.parseInt(binaryGammaRate,2);
     }
 
-    private String calculateBasedOnAmountOfOnes(String whenMostCommonBitIsOne, String whenMostCommonBitIsZero) {
+    private String calculateMostCommonBits() {
         String binaryResult = "";
         for (int i = 0; i < stringLength; i++) {
-            binaryResult = binaryResult.concat(calculateOneBitBasedOnAmountOfOnes(whenMostCommonBitIsOne, whenMostCommonBitIsZero, i));
+            binaryResult = binaryResult.concat(calculateMostCommonBit(i));
         }
         return binaryResult;
     }
@@ -41,20 +41,24 @@ public class NaiveDiagnosticsInterpreter implements DiagnosticsInterpreter{
         return result;
     }
 
-    private String calculateOneBitBasedOnAmountOfOnes(String whenMostCommonBitIsOne, String whenMostCommonBitIsZero, int characterIndex) {
-        long amountOfOnes = countAmountOfCharAtIndex('1', characterIndex);
-        return amountOfOnes > (diagnostics.size() / 2) ? whenMostCommonBitIsOne : whenMostCommonBitIsZero;
+    private String calculateMostCommonBit(int characterIndex) {
+        return mostCommonBitAtIndex(characterIndex) ? "1" : "0";
     }
 
-    private long countAmountOfCharAtIndex(char c, int i) {
+    private boolean mostCommonBitAtIndex(int index) {
+        long amountOfOnes = countAmountOfOnesAtIndex(index);
+        return amountOfOnes > (diagnostics.size() / 2);
+    }
+
+    private long countAmountOfOnesAtIndex(int i) {
         return diagnostics.stream()
-                .filter(line -> line.charAt(i) == c)
+                .filter(line -> line.charAt(i) == '1')
                 .count();
     }
 
     @Override
     public int getEpsilonRate() {
-        String binaryGammaRate = calculateBasedOnAmountOfOnes("1", "0");
+        String binaryGammaRate = calculateMostCommonBits();
         String binaryEpsilonRate = invertBinaryString(binaryGammaRate);
         return Integer.parseInt(binaryEpsilonRate,2);
     }

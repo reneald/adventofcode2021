@@ -14,10 +14,12 @@ public class App
     {
         FileAccessor fileAccessor = new FileAccessor();
         Optional<List<String>> strings = fileAccessor.readAsStringList(new File("day3/src/main/resources/input.txt"));
-        //TODO only need to count the total of lines and then count the 1s for each column, no need to count the 0s as well
-        //example for binary to decimal
-        String binaryString="1010";
-        int decimal=Integer.parseInt(binaryString,2);
-        System.out.println( "Hello World!" );
+        DiagnosticsInterpreter diagnosticsInterpreter = new NaiveDiagnosticsInterpreter(strings.orElseThrow(() -> new IllegalArgumentException("Input is empty!")));
+        System.out.println("Gamma Rate:");
+        System.out.println(diagnosticsInterpreter.getGammaRate());
+        System.out.println("Epsilon Rate:");
+        System.out.println(diagnosticsInterpreter.getEpsilonRate());
+        System.out.println("Power Consumption:");
+        System.out.println(diagnosticsInterpreter.getPowerConsumption());
     }
 }
