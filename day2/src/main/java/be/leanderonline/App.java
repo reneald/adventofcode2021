@@ -15,9 +15,8 @@ public class App
     {
         FileAccessor fileAccessor = new FileAccessor();
         Optional<List<String>> strings = fileAccessor.readAsStringList(new File("day2/src/main/resources/input.txt"));
-        DirectionsInterpreter directionsInterpreter = new DirectionsInterpreter();
-        Map<Direction, Integer> directionIntegerMap = directionsInterpreter.convertStringListToDirectionTotal(strings.orElseThrow(() -> new IllegalArgumentException("could not get directions from input.")));
-        int horizontalPositionMultipliedByDepth = directionsInterpreter.getHorizontalPositionMultipliedByDepth(directionIntegerMap);
+        NaiveDirectionsInterpreter directionsInterpreter = new NaiveDirectionsInterpreter();
+        int horizontalPositionMultipliedByDepth = directionsInterpreter.getCurrentPosition(strings.orElseThrow(() -> new IllegalArgumentException("could not get directions from input.")));
         System.out.println(horizontalPositionMultipliedByDepth);
     }
 

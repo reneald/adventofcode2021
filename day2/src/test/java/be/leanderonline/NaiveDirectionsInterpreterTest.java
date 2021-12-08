@@ -1,6 +1,5 @@
 package be.leanderonline;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -11,8 +10,8 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class DirectionsInterpreterTest {
-    private final DirectionsInterpreter directionsInterpreter = new DirectionsInterpreter();
+class NaiveDirectionsInterpreterTest {
+    private final NaiveDirectionsInterpreter directionsInterpreter = new NaiveDirectionsInterpreter();
 
     @Test
     public void convertStringListToDirectionTotal_happyFlow() {
