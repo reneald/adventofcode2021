@@ -47,7 +47,7 @@ public class NaiveDiagnosticsInterpreter implements DiagnosticsInterpreter{
 
     private boolean mostCommonBitAtIndex(int index) {
         long amountOfOnes = countAmountOfOnesAtIndex(index);
-        return amountOfOnes > (diagnostics.size() / 2);
+        return amountOfOnes >= (diagnostics.size() / 2);
     }
 
     private long countAmountOfOnesAtIndex(int i) {
@@ -66,5 +66,20 @@ public class NaiveDiagnosticsInterpreter implements DiagnosticsInterpreter{
     @Override
     public int getPowerConsumption() {
         return getGammaRate() * getEpsilonRate();
+    }
+
+    @Override
+    public int getOxygenGeneratorRating() {
+        return 0;
+    }
+
+    @Override
+    public int getCo2ScrubberRating() {
+        return 0;
+    }
+
+    @Override
+    public int getLifeSupportRating() {
+        return 0;
     }
 }
