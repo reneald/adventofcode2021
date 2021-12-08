@@ -1,3 +1,5 @@
+package be.leanderonline;
+
 import java.io.File;
 import java.util.Scanner;
 
