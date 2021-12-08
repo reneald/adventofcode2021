@@ -2,6 +2,7 @@ package be.leanderonline;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static be.leanderonline.Direction.FORWARD;
 
@@ -20,28 +21,14 @@ public class FileAccessor {
         return ints;
     }
 
-    public Map<Direction, Integer> readAsDirectionTotals(File file) {
-        Map<Direction, Integer> directions = new HashMap<>();
+    public Optional<List<String>> readAsStringList(File file) {
+        List<String> stringList = null;
         try (BufferedReader reader = getBufferedReader(file)) {
-            String directionStringFromLine;
-            while ((directionStringFromLine = reader.readLine()) != null) {
-                String[] s = directionStringFromLine.split(" ");
-                Direction directionFromLine = null;
-                Integer distance = Integer.parseInt(s[1]);
-                for (Direction direction : Direction.values()) {
-                    if (direction.getMessage().equals(s[0])) {
-                        directionFromLine = direction;
-                    }
-                }
-                if (directionFromLine == null) {
-                    throw new IllegalArgumentException("Given direction is not known.");
-                }
-                directions.merge(directionFromLine, distance, Integer::sum);
-            }
+            stringList = reader.lines().collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return directions;
+        return Optional.ofNullable(stringList);
     }
 
     private BufferedReader getBufferedReader(File file) throws FileNotFoundException {
