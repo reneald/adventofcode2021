@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +37,21 @@ class DirectionsInterpreterTest {
         assertThat(result.get(Direction.FORWARD)).isEqualTo(31);
         assertThat(result.get(Direction.DOWN)).isEqualTo(21);
         assertThat(result.get(Direction.UP)).isEqualTo(3);
+    }
+
+    @Test
+    public void getHorizontalPositionMultipliedByDepth() {
+        //GIVEN
+        Map<Direction, Integer> directions = new HashMap<>();
+        directions.put(Direction.DOWN, 21);
+        directions.put(Direction.UP, 3);
+        directions.put(Direction.FORWARD,31);
+
+        //WHEN
+        int result = directionsInterpreter.getHorizontalPositionMultipliedByDepth(directions);
+
+        //THEN
+        assertThat(result).isEqualTo(558);
     }
 
 }

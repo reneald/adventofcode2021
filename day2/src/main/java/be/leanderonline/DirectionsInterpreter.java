@@ -47,4 +47,18 @@ public class DirectionsInterpreter {
         }
     }
 
+    public int getHorizontalPositionMultipliedByDepth(Map<Direction, Integer> directions) {
+        int depth = getDepth(directions);
+        Integer horizontalPosition = getHorizontalPosition(directions);
+        return horizontalPosition * depth;
+    }
+
+    private Integer getHorizontalPosition(Map<Direction, Integer> directions) {
+        return directions.get(Direction.FORWARD);
+    }
+
+    private int getDepth(Map<Direction, Integer> directions) {
+        return directions.get(Direction.DOWN) - directions.get(Direction.UP);
+    }
+
 }
