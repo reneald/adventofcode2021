@@ -7,5 +7,5 @@ import java.util.List;
 public interface BingoMaster {
     List<Integer> getDrawLine();
     int getAmountOfBoards();
-    Pair<Integer, BingoBoard> play();
+    Pair<Integer, BingoBoard> play() throws BingoException;
 }
