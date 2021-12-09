@@ -1,10 +1,22 @@
 package be.leanderonline;
 
+import java.util.List;
+
 public class BingoBoardImpl implements BingoBoard{
     private BingoCell[][] board;
 
     private BingoBoardImpl(BingoBoardBuilder builder) {
         this.board = builder.board;
+    }
+
+    public BingoBoardImpl(List<List<Integer>> elements) {
+        this.board = new BingoCell[elements.size()][elements.size()];
+        for (int i = 0; i < elements.size(); i++) {
+            for (int j = 0; j < elements.size(); j++) {
+                BingoCell cell = new BingoCell(elements.get(i).get(j));
+                this.board[i][j] = cell;
+            }
+        }
     }
 
     @Override
