@@ -32,4 +32,11 @@ public class BingoCell {
     public int getColumnIndex() {
         return columnIndex;
     }
+
+    @Override
+    public String toString() {
+        return number + ", " +
+                "[" + rowIndex + ":" + columnIndex + "], " +
+                (isMarked() ? "Marked" : "");
+    }
 }

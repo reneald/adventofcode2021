@@ -84,7 +84,9 @@ public class BingoBoardImpl implements BingoBoard {
     }
 
     private void markIfSameNumber(int number, BingoCell cell) {
-        cell.setMarked(number == cell.getNumber());
+        if (number == cell.getNumber()) {
+            cell.setMarked(true);
+        }
     }
 
     public static class BingoBoardBuilder {
