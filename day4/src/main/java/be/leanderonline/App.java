@@ -19,6 +19,15 @@ public class App
         FirstBingoMaster bingo = new BingoInterpreter().createBingo(strings.orElseThrow(() -> new IllegalArgumentException("Input is empty")));
         try {
             Pair<Integer, BingoBoard> result = bingo.play();
+            System.out.println("Winner's score:");
+            System.out.println(result.getKey() * result.getValue().sumOfUnmarkedNumbers());
+        } catch (BingoException e) {
+            e.printStackTrace();
+        }
+        bingo = new BingoInterpreter().createBingo(strings.orElseThrow(() -> new IllegalArgumentException("Input is empty")));
+        try {
+            Pair<Integer, BingoBoard> result = bingo.playUntilAllBoardsWin();
+            System.out.println("Loser's score:");
             System.out.println(result.getKey() * result.getValue().sumOfUnmarkedNumbers());
         } catch (BingoException e) {
             e.printStackTrace();

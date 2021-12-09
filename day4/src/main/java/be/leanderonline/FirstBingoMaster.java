@@ -52,4 +52,40 @@ public class FirstBingoMaster implements BingoMaster {
                 .findFirst();
         return optionalWinner.orElseThrow(() -> new BingoException("No Board has won after playing"));
     }
+
+    @Override
+    public Pair<Integer, BingoBoard> playUntilAllBoardsWin() throws BingoException {
+        drawLineIndex -= 1;
+        BingoBoard loser = null;
+        do {
+            drawLineIndex++;
+            Integer currentNumber = getNumberThatWasJustCalled();
+            boards.forEach(board -> board.markNumber(currentNumber));
+            if (getAmountOfWinningBoards() + 1 == getAmountOfBoards()) {
+                loser = getLoser();
+            }
+        } while (!allBoardsHaveWon());
+        if (loser == null) {
+            throw new BingoException("How did you even get here?");
+        }
+        return new Pair<>(getNumberThatWasJustCalled(), loser);
+    }
+
+    private int getAmountOfWinningBoards() {
+        return (int) this.boards.parallelStream()
+                .filter(BingoBoard::hasWon)
+                .count();
+    }
+
+    private BingoBoard getLoser() throws BingoException {
+        Optional<BingoBoard> optionalWinner = this.boards.parallelStream()
+                .filter(board -> !board.hasWon())
+                .findFirst();
+        return optionalWinner.orElseThrow(() -> new BingoException("How did you even get here?"));
+    }
+
+    private boolean allBoardsHaveWon() {
+        return this.boards.stream()
+                .allMatch(BingoBoard::hasWon);
+    }
 }

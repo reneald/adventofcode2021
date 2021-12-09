@@ -8,4 +8,5 @@ public interface BingoMaster {
     List<Integer> getDrawLine();
     int getAmountOfBoards();
     Pair<Integer, BingoBoard> play() throws BingoException;
+    Pair<Integer, BingoBoard> playUntilAllBoardsWin() throws BingoException;
 }
