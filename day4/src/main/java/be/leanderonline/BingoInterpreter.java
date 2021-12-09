@@ -7,10 +7,10 @@ import java.util.stream.Collectors;
 
 public class BingoInterpreter {
 
-    public BingoMaster createBingo(List<String> input) {
+    public FirstBingoMaster createBingo(List<String> input) {
         List<Integer> drawLine = getDrawLine(input);
         List<BingoBoard> bingoBoards = getBingoBoards(input);
-        return new BingoMaster(drawLine, bingoBoards);
+        return new FirstBingoMaster(drawLine, bingoBoards);
     }
 
     private List<BingoBoard> getBingoBoards(List<String> input) {

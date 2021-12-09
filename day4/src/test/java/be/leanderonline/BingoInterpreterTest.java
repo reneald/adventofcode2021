@@ -1,6 +1,5 @@
 package be.leanderonline;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class BingoInterpreterTest {
     private BingoInterpreter bingoInterpreter;
@@ -43,7 +41,7 @@ class BingoInterpreterTest {
         input.add(" 2  0 12  3  7");
 
         //WHEN
-        BingoMaster bingo = bingoInterpreter.createBingo(input);
+        FirstBingoMaster bingo = bingoInterpreter.createBingo(input);
 
         //THEN
         assertThat(bingo.getDrawLine()).containsExactly(7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1);
