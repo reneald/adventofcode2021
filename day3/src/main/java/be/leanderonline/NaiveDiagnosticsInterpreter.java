@@ -1,8 +1,9 @@
 package be.leanderonline;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class NaiveDiagnosticsInterpreter implements DiagnosticsInterpreter{
+public class NaiveDiagnosticsInterpreter implements DiagnosticsInterpreter {
     private List<String> diagnostics;
     private int stringLength;
 
@@ -22,7 +23,11 @@ public class NaiveDiagnosticsInterpreter implements DiagnosticsInterpreter{
     @Override
     public int getGammaRate() {
         String binaryGammaRate = calculateMostCommonBits();
-        return Integer.parseInt(binaryGammaRate,2);
+        return parseBinaryToInt(binaryGammaRate);
+    }
+
+    private int parseBinaryToInt(String binaryGammaRate) {
+        return Integer.parseInt(binaryGammaRate, 2);
     }
 
     private String calculateMostCommonBits() {
@@ -36,23 +41,28 @@ public class NaiveDiagnosticsInterpreter implements DiagnosticsInterpreter{
     private String invertBinaryString(String binaryString) {
         String result = "";
         for (int i = 0; i < stringLength; i++) {
-            result = result.concat(binaryString.charAt(i) == '1' ? "0" : "1");
+            result = result.concat(bitAtIndex(binaryString, i) ? "0" : "1");
         }
         return result;
     }
 
     private String calculateMostCommonBit(int characterIndex) {
-        return mostCommonBitAtIndex(characterIndex) ? "1" : "0";
+        return mostCommonBitAtIndex(characterIndex, diagnostics) ? "1" : "0";
     }
 
-    private boolean mostCommonBitAtIndex(int index) {
-        long amountOfOnes = countAmountOfOnesAtIndex(index);
-        return amountOfOnes >= (diagnostics.size() / 2);
+    private boolean mostCommonBitAtIndex(int index, List<String> diagnosticsList) {
+        long amountOfOnes = countAmountOfOnesAtIndex(index, diagnosticsList);
+        return isMajorityOf(amountOfOnes, diagnosticsList);
     }
 
-    private long countAmountOfOnesAtIndex(int i) {
-        return diagnostics.stream()
-                .filter(line -> line.charAt(i) == '1')
+    private boolean isMajorityOf(long amountOfOnes, List<String> diagnosticsList) {
+        long amountOfZeroes = diagnosticsList.size() - amountOfOnes;
+        return amountOfOnes >= amountOfZeroes;
+    }
+
+    private long countAmountOfOnesAtIndex(int i, List<String> diagnosticsList) {
+        return diagnosticsList.stream()
+                .filter(line -> bitAtIndex(line, i))
                 .count();
     }
 
@@ -60,7 +70,7 @@ public class NaiveDiagnosticsInterpreter implements DiagnosticsInterpreter{
     public int getEpsilonRate() {
         String binaryGammaRate = calculateMostCommonBits();
         String binaryEpsilonRate = invertBinaryString(binaryGammaRate);
-        return Integer.parseInt(binaryEpsilonRate,2);
+        return parseBinaryToInt(binaryEpsilonRate);
     }
 
     @Override
@@ -70,16 +80,56 @@ public class NaiveDiagnosticsInterpreter implements DiagnosticsInterpreter{
 
     @Override
     public int getOxygenGeneratorRating() {
-        return 0;
+        int index = 0;
+        List<String> remainingDiagnosticNumbers = diagnostics;
+        while (remainingDiagnosticNumbers.size() > 1) {
+            remainingDiagnosticNumbers = filterDiagnosticsByEqualToMostCommonBitAtIndex(remainingDiagnosticNumbers, index);
+            index++;
+        }
+        return parseBinaryToInt(remainingDiagnosticNumbers.get(0));
+    }
+
+    private List<String> filterDiagnosticsByEqualToMostCommonBitAtIndex(List<String> diagnosticList, int index) {
+        return diagnosticList.stream()
+                .filter(diagnostic -> this.equalToMostCommonBitAtIndex(diagnostic, index, diagnosticList))
+                .collect(Collectors.toList());
+    }
+
+    private List<String> filterDiagnosticsByEqualToLeastCommonBitAtIndex(List<String> diagnosticList, int index) {
+        return diagnosticList.stream()
+                .filter(diagnostic -> this.equalToLeastCommonBitAtIndex(diagnostic, index, diagnosticList))
+                .collect(Collectors.toList());
+    }
+
+    private boolean equalToMostCommonBitAtIndex(String diagnosticString, int index, List<String> diagnosticsList) {
+        boolean mostCommonBitAtIndex = mostCommonBitAtIndex(index, diagnosticsList);
+        boolean bitAtIndex = bitAtIndex(diagnosticString, index);
+        return mostCommonBitAtIndex == bitAtIndex;
+    }
+
+    private boolean equalToLeastCommonBitAtIndex(String diagnosticString, int index, List<String> diagnosticsList) {
+        boolean mostCommonBitAtIndex = mostCommonBitAtIndex(index, diagnosticsList);
+        boolean bitAtIndex = bitAtIndex(diagnosticString, index);
+        return mostCommonBitAtIndex != bitAtIndex;
+    }
+
+    private boolean bitAtIndex(String diagnosticString, int index) {
+        return diagnosticString.charAt(index) == '1';
     }
 
     @Override
     public int getCo2ScrubberRating() {
-        return 0;
+        int index = 0;
+        List<String> remainingDiagnosticNumbers = diagnostics;
+        while (remainingDiagnosticNumbers.size() > 1) {
+            remainingDiagnosticNumbers = filterDiagnosticsByEqualToLeastCommonBitAtIndex(remainingDiagnosticNumbers, index);
+            index++;
+        }
+        return parseBinaryToInt(remainingDiagnosticNumbers.get(0));
     }
 
     @Override
     public int getLifeSupportRating() {
-        return 0;
+        return getOxygenGeneratorRating() * getCo2ScrubberRating();
     }
 }
