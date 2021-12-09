@@ -21,5 +21,11 @@ public class App
         System.out.println(diagnosticsInterpreter.getEpsilonRate());
         System.out.println("Power Consumption:");
         System.out.println(diagnosticsInterpreter.getPowerConsumption());
+        System.out.println("Oxygen Generator rating:");
+        System.out.println(diagnosticsInterpreter.getOxygenGeneratorRating());
+        System.out.println("CO2 scrubber rating:");
+        System.out.println(diagnosticsInterpreter.getCo2ScrubberRating());
+        System.out.println("Life support rating:");
+        System.out.println(diagnosticsInterpreter.getLifeSupportRating());
     }
 }
